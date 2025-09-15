@@ -34,8 +34,8 @@ const colors = [
   "#ffa0e6ff",
 ];
 
-const clickSound = new Audio("");
-const mistakeSound = new Audio("");
+const correctSound = new Audio("correct.wav");
+const mistakeSound = new Audio("mistake.mp3");
 
 let gameSequence = [];
 let userSequence = [];
@@ -73,13 +73,12 @@ for (let i = 0; i < totalButtons; i++) {
   const btn = document.createElement("div");
   btn.classList.add("btn");
   btn.id = "btn" + i;
-  btn.addEventListener("click", () => {});
+  btn.addEventListener("correct", () => {});
   btn.style.backgroundColor = colors[i];
   grid.appendChild(btn);
 }
-
 function playSound(type) {
-  if (type === "click") clickSound.play();
+  if (type === "correct") correctSound.play();
   else if (type === "mistake") mistakeSound.play();
 }
 
@@ -87,7 +86,6 @@ function flashButton(index) {
   const btn = document.getElementById("btn" + index);
   btn.classList.add("flash");
   btn.style.backgroundColor = "#ffffffff";
-  playSound("click");
   setTimeout(() => {
     btn.style.backgroundColor = "#ffa0e6ff";
     btn.style.transtition = ".3s";
@@ -154,9 +152,11 @@ function resetGameAndStart() {
 document.querySelectorAll(".btn").forEach((btn, index) => {
   btn.addEventListener("click", () => {
     if (!acceptingInput) return;
+    playSound("correct");
     const el = document.getElementById("btn" + index);
     el.classList.add("pressed");
     flashButton(index);
+    playSound("correct");
     setTimeout(() => {
       el.classList.remove("pressed");
     }, 300);
