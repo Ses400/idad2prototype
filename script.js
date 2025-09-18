@@ -113,7 +113,6 @@ function nextSequence() {
   level++;
   gameSequence = generateNewSequence(level);
   userSequence = [];
-
   acceptingInput = false;
   gameSequence.forEach((val, i) => {
     setTimeout(() => {
@@ -129,12 +128,16 @@ function nextSequence() {
 function checkUserInput(index) {
   if (userSequence[index] !== gameSequence[index]) {
     playSound("mistake");
+    document.querySelectorAll(".btn").forEach((btn) => {
+      btn.style.backgroundColor = "#ff4c4c";
+    });
     showToast(`Wrong! Total score is sequence ${level}`);
     acceptingInput = false;
     return;
   }
 
   if (userSequence.length === gameSequence.length) {
+    playSound("correct");
     const ordinal = ordinals[level - 1] || `${level}th`;
     showToast(`You completed the ${ordinal} sequence`);
     acceptingInput = false;
@@ -152,11 +155,9 @@ function resetGameAndStart() {
 document.querySelectorAll(".btn").forEach((btn, index) => {
   btn.addEventListener("click", () => {
     if (!acceptingInput) return;
-    playSound("correct");
     const el = document.getElementById("btn" + index);
     el.classList.add("pressed");
     flashButton(index);
-    playSound("correct");
     setTimeout(() => {
       el.classList.remove("pressed");
     }, 300);
@@ -164,9 +165,16 @@ document.querySelectorAll(".btn").forEach((btn, index) => {
     checkUserInput(userSequence.length - 1);
   });
 });
-restartBtn.addEventListener(`click`, () => {
-  resetGameAndStart();
-});
+restartBtn.addEventListener(
+  `click`,
+  () => {
+    resetGameAndStart();
+    document.querySelectorAll(".btn").forEach((btn) => {
+      btn.style.backgroundColor = "#ffa0e6ff";
+    });
+  },
+  500
+);
 
 window.addEventListener("DOMContentLoaded", () => {
   resetGameAndStart();

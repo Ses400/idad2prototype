@@ -54,6 +54,10 @@ h1 {
   box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
 }
 
+.btn.wrong {
+  transition: background-color 0.3s ease;
+}
+
 .active,
 .button:hover {
   background-color: #ffffff;
